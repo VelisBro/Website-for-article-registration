@@ -16,6 +16,10 @@
 # next.js
 /.next/
 /out/
+/archive-site/
+/.restored/
+/.next-dev.log
+/.next-dev.err
 
 # production
 /build

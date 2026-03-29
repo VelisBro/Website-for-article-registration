@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Day Site</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at top, rgba(34, 211, 238, 0.16), transparent 32%),
+          linear-gradient(180deg, #07111f 0%, #050816 100%);
+        color: #f8fafc;
+      }
+
+      main {
+        width: min(720px, calc(100vw - 32px));
+        padding: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(14px);
+      }
+
+      h1 {
+        margin: 0 0 16px;
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+
+      p {
+        margin: 0 0 16px;
+        line-height: 1.7;
+        color: rgba(248, 250, 252, 0.8);
+      }
+
+      code {
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(34, 211, 238, 0.12);
+        color: #67e8f9;
+      }
+
+      a {
+        color: #67e8f9;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Сайт запускается через Next.js</h1>
+      <p>
+        Этот файл больше не пустой, поэтому при открытии папки
+        <code>frontend/</code> ты не увидишь белую страницу.
+      </p>
+      <p>
+        Настоящий сайт находится в папке <code>app/</code>. Запусти проект из
+        корня командами <code>npm run dev</code> или
+        <code>npm run dev:local</code>.
+      </p>
+      <p>
+        После запуска открой <a href="http://localhost:3000">localhost:3000</a>
+        или <a href="http://localhost:3001">localhost:3001</a>.
+      </p>
+    </main>
+  </body>
+</html>

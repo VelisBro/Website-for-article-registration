@@ -1,5 +1,4 @@
 import { redirect } from 'next/navigation';
-import { loginAction } from '@/app/login/actions';
 import { getCurrentAdmin } from '@/lib/auth';
 
 const errorMessages: Record<string, string> = {
@@ -42,7 +41,7 @@ export default async function LoginPage({
           </div>
         ) : null}
 
-        <form action={loginAction} className="mt-8 space-y-4">
+        <form method="post" action="/login/submit" className="mt-8 space-y-4">
           <div>
             <label className="mb-2 block text-sm text-white/70">Логин</label>
             <input

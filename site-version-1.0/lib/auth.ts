@@ -14,6 +14,10 @@ function sha256(input: string) {
 function getSessionSecret() {
   const secret = process.env.SESSION_SECRET;
 
+  if (!secret && process.env.NODE_ENV !== 'production') {
+    return 'iu5-local-dev-session-secret';
+  }
+
   if (!secret) {
     throw new Error('SESSION_SECRET is not configured');
   }
@@ -134,9 +138,31 @@ export async function requireAdmin() {
 }
 
 export async function authenticateAdmin(username: string, password: string) {
-  const user = await prisma.adminUser.findUnique({
+  let user = await prisma.adminUser.findUnique({
     where: { username },
   });
+
+  if (!user) {
+    const userCount = await prisma.adminUser.count();
+
+    if (userCount === 0) {
+      const defaultUsername = process.env.ADMIN_USERNAME || 'admin';
+      const defaultPassword = process.env.ADMIN_PASSWORD || 'ChangeMeAdmin123!';
+      const displayName = process.env.ADMIN_DISPLAY_NAME || 'Administrator';
+
+      if (username === defaultUsername && password === defaultPassword) {
+        const passwordHash = await bcrypt.hash(defaultPassword, 12);
+
+        user = await prisma.adminUser.create({
+          data: {
+            username: defaultUsername,
+            passwordHash,
+            displayName,
+          },
+        });
+      }
+    }
+  }
 
   if (!user) {
     return null;

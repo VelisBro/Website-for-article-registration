@@ -1,0 +1,45 @@
+{
+  "name": "site-version-1.0",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build",
+    "build:verify": "node scripts/run-next-build.cjs",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run lint && npm run typecheck",
+    "verify": "npm run test && npm run build:verify",
+    "ci:verify": "npm run db:generate && npm run verify",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:fix-slugs": "tsx scripts/fix-news-slugs.ts",
+    "cleanup:uploads:dry": "tsx scripts/cleanup-orphan-uploads.ts",
+    "cleanup:uploads": "tsx scripts/cleanup-orphan-uploads.ts --apply"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.2",
+    "bcryptjs": "^3.0.3",
+    "next": "16.2.1",
+    "prisma": "^6.16.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

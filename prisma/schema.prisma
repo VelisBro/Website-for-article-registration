@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  username     String         @unique
+  passwordHash String
+  displayName  String
+  role         String         @default("admin")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model SiteSettings {
+  id                   String   @id @default(cuid())
+  siteTitle            String
+  siteDescription      String
+  heroBadge            String
+  heroTitle            String
+  heroSubtitle         String
+  heroDescription      String
+  homeDirections       String
+  aboutTitle           String
+  aboutDescription     String
+  aboutIntro           String @default("")
+  aboutFoundationTitle String @default("")
+  aboutFoundationText  String @default("")
+  aboutLeadershipTitle String @default("")
+  aboutLeaders         String @default("")
+  aboutDevelopmentTitle String @default("")
+  aboutDevelopmentItems String @default("")
+  aboutAchievementsTitle String @default("")
+  aboutAchievementsItems String @default("")
+  aboutTodayTitle      String @default("")
+  aboutTodayText       String @default("")
+  aboutImagePrimaryUrl String @default("")
+  aboutImagePrimaryCaption String @default("")
+  aboutImageSecondaryUrl String @default("")
+  aboutImageSecondaryCaption String @default("")
+  contactsTitle        String
+  contactsDescription  String
+  contactsPhone        String
+  contactsEmail        String
+  contactsAddress      String
+  contactsWorkingHours String
+  applicantsBadge      String   @default("Абитуриентам")
+  applicantsTitle      String   @default("Поступающим")
+  applicantsDescription String  @default("Актуальная информация, материалы и документы для абитуриентов.")
+  updatedAt            DateTime @updatedAt
+}
+
+model Teacher {
+  id         String   @id @default(cuid())
+  name       String
+  role       String
+  bio        String
+  tags       String
+  photoUrl   String?
+  sortOrder  Int      @default(0)
+  isPublished Boolean @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+}
+
+model ApplicantMaterial {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?
+  videoUrl    String?
+  fileUrl     String?
+  linkUrl     String?
+  buttonLabel String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+}
+
+model ApplicantFaq {
+  id          String   @id @default(cuid())
+  question    String
+  questionAuthor String?
+  answer      String?
+  answerAuthor String?
+  answeredAt  DateTime?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(false)
+  adminArchived Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, sortOrder])
+}
+
+model ApplicantAdmissionStat {
+  id           String   @id @default(cuid())
+  category     String
+  year         Int
+  passingScore Int
+  averageScore Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([category, year])
+  @@index([category, year])
+}
+
+model NewsPost {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  category     String
+  excerpt      String
+  content      String
+  imageUrl     String?
+  publishedAt  DateTime
+  featured     Boolean  @default(false)
+  featuredRank Int?
+  isPublished  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([publishedAt])
+  @@index([featured, featuredRank])
+}
